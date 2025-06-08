@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Nosso Amor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Parisienne&family=Montserrat:wght@400;700&display=swap');
+
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      color: #7b1f40;
+      overflow-x: hidden;
+      min-height: 100vh;
+      position: relative;
+      background-color: #fff0f5;
+    }
+
+    /* Fundo com GIF */
+    .gif-fundo {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('https://media1.tenor.com/m/of68oV6UxnAAAAAd/gato-beijo-gato-gostoso.gif');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0.25;
+      z-index: -10;
+    }
+
+    /* Corações flutuantes */
+    .coracoes {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -5;
+      overflow: hidden;
+    }
+
+    .heart {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background: #e91e63;
+      transform: rotate(45deg);
+      animation: flutuar 12s linear infinite;
+      opacity: 0.6;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      background: #e91e63;
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      top: -15px;
+      left: 0;
+    }
+
+    .heart::after {
+      top: 0;
+      left: -15px;
+    }
+
+    @keyframes flutuar {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-100vh); }
+    }
+
+    .carta-inicial {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: #fff0f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      z-index: 100;
+      transition: opacity 1s ease;
+    }
+
+    .carta-inicial.oculto {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .coração {
+      font-size: 3rem;
+      color: #e91e63;
+      animation: pulse 1.5s infinite;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .coração span {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #b93b5d;
+    }
+
+    .nome-rebeca {
+      font-family: 'Parisienne', cursive;
+      font-size: 3rem;
+      color: #d6336c;
+      text-shadow: 1px 1px 2px #f9d5e5;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+
+    .container {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .mostra {
+      display: flex;
+    }
+
+    h1 {
+      font-family: 'Parisienne', cursive;
+      font-size: 3.5rem;
+      margin-bottom: 5px;
+      color: #b93b5d;
+      text-shadow: 1px 1px 2px #f9d5e5;
+    }
+
+    #contador {
+      font-size: 1.6rem;
+      font-weight: 600;
+      margin-bottom: 30px;
+      color: #a23151;
+      text-shadow: 1px 1px 2px #ffd5e1;
+    }
+
+    .polaroid-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .polaroid {
+      background: white;
+      border: 10px solid white;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      width: 200px;
+      text-align: center;
+      font-weight: bold;
+      color: #c0395a;
+      font-size: 0.95rem;
+      padding-bottom: 10px;
+      transform: rotate(-2deg);
+      animation: aparecer 1s ease forwards;
+      opacity: 0;
+    }
+
+    .polaroid img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      display: block;
+    }
+
+    @keyframes aparecer {
+      0% { opacity: 0; transform: translateY(50px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .mensagem {
+      font-family: 'Parisienne', cursive;
+      font-size: 2.2rem;
+      text-align: center;
+      color: #a8325a;
+      margin-top: 40px;
+      text-shadow: 1px 1px 2px #fdd5e3;
+    }
+
+    .mensagem span {
+      font-family: 'Montserrat', sans-serif;
+      display: block;
+      font-size: 1.2rem;
+      margin-top: 10px;
+      color: #7b2e45;
+    }
+  </style>
+</head>
+<body>
+
+<div class="gif-fundo"></div>
+<div class="coracoes" id="coracoes"></div>
+
+<!-- Música local -->
+<audio id="audioLocal" src="music.mp3"></audio>
+
+<!-- Tela inicial -->
+<div class="carta-inicial" id="carta">
+  <div class="coração" onclick="abrirCarta()">
+    ❤️
+    <span>Clique para abrir</span>
+    <div class="nome-rebeca">Rebeca 💖</div>
+  </div>
+</div>
+
+<!-- Conteúdo principal -->
+<div class="container" id="conteudo">
+  <h1>Desde que tudo começou...</h1>
+  <div id="contador">Carregando...</div>
+
+  <div class="polaroid-container" id="polaroids"></div>
+
+  <div class="mensagem">
+    Eu te amo, Rebeca. Você é tudo pra mim!
+    <span>Assinado: seu futuro marido, Matheus F. Sousa 💍❤️</span>
+  </div>
+</div>
+
+<script>
+  function abrirCarta() {
+    document.getElementById('carta').classList.add('oculto');
+    document.getElementById('conteudo').classList.add('mostra');
+    document.getElementById('audioLocal').play();
+    mostrarFotosComIntervalo();
+  }
+
+  function atualizarContador() {
+    const inicio = new Date("2024-12-13T20:30:00");
+    const agora = new Date();
+    const diff = agora - inicio;
+    const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const horas = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutos = Math.floor((diff / (1000 * 60)) % 60);
+    const segundos = Math.floor((diff / 1000) % 60);
+    document.getElementById("contador").textContent =
+      `${dias} dias, ${horas}h ${minutos}m ${segundos}s desde 13/12/2024 às 20:30`;
+  }
+
+  setInterval(atualizarContador, 1000);
+  atualizarContador();
+
+  function criarCoracoes() {
+    const coracoes = document.getElementById('coracoes');
+    for (let i = 0; i < 20; i++) {
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.style.left = `${Math.random() * 100}vw`;
+      heart.style.top = `${Math.random() * 100}vh`;
+      heart.style.animationDuration = `${8 + Math.random() * 5}s`;
+      coracoes.appendChild(heart);
+    }
+  }
+  criarCoracoes();
+
+  const fotos = [
+    { src: 'foto1.png', frase: 'Você é meu lar 💕' },
+    { src: 'foto2.jpg', frase: 'Te amo mais a cada dia 🌹' },
+    { src: 'foto3.jpg', frase: 'Meu coração é todo seu ❤️' },
+    { src: 'foto4.jpg', frase: 'Você me faz sorrir todos os dias 💖' },
+    { src: 'foto5.jpg', frase: 'Ao seu lado, tudo faz sentido ✨' },
+    { src: 'foto6.jpg', frase: 'Nosso amor é eterno 💘' }
+  ];
+
+  function mostrarFotosComIntervalo() {
+    const container = document.getElementById('polaroids');
+    fotos.forEach((foto, index) => {
+      setTimeout(() => {
+        const polaroid = document.createElement('div');
+        polaroid.className = 'polaroid';
+        polaroid.style.animationDelay = `${index * 1}s`;
+        polaroid.innerHTML = `<img src="${foto.src}" alt="Foto ${index + 1}"><div>${foto.frase}</div>`;
+        container.appendChild(polaroid);
+      }, index * 1000);
+    });
+  }
+</script>
+
+</body>
+</html>
